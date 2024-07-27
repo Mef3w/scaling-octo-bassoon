@@ -1,0 +1,17 @@
+import Foundation
+import Telegrammer
+
+do {
+    let bot = try Bot(token: "BOT_TOKEN_HERE")
+
+    let echoHandler = MessageHandler { (update, _) in
+        _ = try? update.message?.reply(text: "Hello \(update.message?.from?.firstName ?? "anonymous")", from: bot)
+    }
+
+    let dispatcher = Dispatcher(bot: bot)
+    dispatcher.add(handler: echoHandler)
+
+    _ = try Updater(bot: bot, dispatcher: dispatcher).startLongpolling().wait()
+} catch {
+    exit(1)
+}
